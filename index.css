@@ -1,0 +1,7 @@
+#pg {
+    width: 500px;
+    height: 500px;
+    position: relative;
+    background-color: #f1f1f1;
+    overflow: hidden;
+}
