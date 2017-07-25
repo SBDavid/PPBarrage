@@ -6,7 +6,7 @@ var defalutConfig = {
     bulletHeight: 50,
     fireInterval: 200,
     displayTime: 6000,  // 弹幕显示的时长
-    isDebug: false,
+    isDebug: true,
     fontSize: 24        // 弹幕字体大小
 }
 
@@ -48,10 +48,9 @@ function mountBullet(ele, bullet) {
 
 barrage.prototype.animate = function (time) {
     if (this.status === 'running') {
-        
+        this.ctx.clearRect(0, 0, this.root.offsetWidth, this.root.offsetHeight);
         requestAnimationFrame(this.animate.bind(this));
         this.tweenGroup.update(time);
-        this.print();
         
         this.fire();
     }
@@ -97,6 +96,9 @@ barrage.prototype.load = function (bullets) {
 barrage.prototype.moveBullet = function(bullet) {
     var step = new TWEEN.Tween(bullet.steps, this.tweenGroup)
         .to({ left: this.root.offsetWidth + bullet.width }, this.config.displayTime)
+        .onUpdate(function(){
+            this.print(bullet);
+        }.bind(this))
         .easing(TWEEN.Easing.Linear.None)
         .onComplete(function () {
             this.bulletRunningPool.delete(bullet.id);
@@ -107,12 +109,11 @@ barrage.prototype.moveBullet = function(bullet) {
     step.start();
 }
 
-barrage.prototype.print = function() {
-    this.ctx.clearRect(0, 0, this.root.offsetWidth, this.root.offsetHeight);
+barrage.prototype.print = function(bullet) {
+    /*this.ctx.clearRect(0, 0, this.root.offsetWidth, this.root.offsetHeight);*/
     var width = this.root.offsetWidth;
     var height = this.root.offsetHeight;
 
-    this.bulletRunningPool.forEach(function(bullet){
         // 半圆
         this.ctx.fillStyle = "rgba(0,0,0,0.5)";
         this.ctx.beginPath();
@@ -141,7 +142,6 @@ barrage.prototype.print = function() {
         this.ctx.fillText(bullet.msg, 
             width - bullet.steps.left + this.config.fontSize / 2, 
             this.tracks[bullet.trackId].top);
-    },this);
 }
 
 barrage.prototype.createBullet = function(bullet) {
