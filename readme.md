@@ -1,3 +1,44 @@
+# 高性能canvas弹幕
+
+支持同时显示200条弹幕，并维持60fps帧率
+![效果](图片链接 "http://i4.eiimg.com/1949/ce509c38502be29c.png")
+
+## 特征
+- 支持配置弹幕显示时间，字数多的弹幕移动更快
+- 优先显示顶部的弹幕
+- 支持弹幕字体大小配置
+- 支持弹幕轨道高度配置
+
+`note: 依赖jquery和tween.js`
+
+##  Compatibility
+| Browser       | Support          |
+| ------------- |:----------------:|
+| IE 9          | √                |
+| IE 10         | √                |
+| IE 11         | √                |
+| chrome 59     | √                |
+| FF 54         | √                |
+
+## API
+| fun           | paramName          | comment  |
+| ------------- |:-------------:| -----:|
+| ppParrage     | root：canvas节点          | 构造方法|
+| init          | config：配置项            | 初始化方法   |
+| load          | bullets：弹幕数据         | 加载弹幕数据  |
+| start         | 无                       | 开始运行     |
+| getStatus     | 无                       | 弹幕执行状态：init，running，idle  |
+
+
+## Usage
+
+- be sure that the jquery is loaded
+- npm i jquery-parallel-ajax
+- $.parallelAjax(options, success, error, 3000);
+
+## Simple
+HTML
+```html
 <!DOCTYPE HTML>
 <html lang="en">
 
@@ -35,7 +76,7 @@
 </head>
 
 <body>
-    <canvas id="pg" width="800" height="400">
+    <canvas id="pg" width="1024" height="768">
 
     </canvas>
     <div>
@@ -48,3 +89,5 @@
 </body>
 
 </html>
+</html>
+```
