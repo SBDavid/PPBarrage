@@ -1,4 +1,5 @@
 function barrage(ele) {
+    console.info(ele instanceof HTMLCanvasElement);
     this.root = ele;
 }
 
@@ -9,13 +10,13 @@ var defalutConfig = {
     fontSize: 14        // 弹幕字体大小
 }
 
-function log(isDebug, ...para) {
+function log(isDebug, para) {
     if (isDebug) {
         console.info(para);
     }
 }
 
-barrage.prototype.initTrack = function() {
+barrage.prototype.initTrack = function () {
     var trackAmount = parseInt(this.root.offsetHeight / this.config.bulletHeight);
     for (var i = 0; i < trackAmount; i++) {
         this.tracks.push({
@@ -29,18 +30,6 @@ barrage.prototype.initTrack = function() {
     log(this.config.isDebug, `初始化弹道数量: ${trackAmount}`);
 }
 
-function createBullet(config, bulletInfo, trackInfo, rootWidth) {
-    var bullet = document.createElement('div');
-    bullet.innerText = bulletInfo.msg;
-    bullet.style.position = 'absolute';
-    bullet.style.left = `${rootWidth}px`;
-    bullet.style.top = `${trackInfo.top}px`;
-    bullet.id = bulletInfo.id;
-    bullet.style.display = 'inline-block';
-    bullet.style['white-space'] = 'nowrap';
-    return bullet;
-}
-
 barrage.prototype.animate = function (time) {
     if (this.status === 'running') {
         this.ctx.clearRect(0, 0, this.root.offsetWidth, this.root.offsetHeight);
@@ -52,7 +41,7 @@ barrage.prototype.animate = function (time) {
 
 barrage.prototype.init = function (config) {
 
-    this.config = Object.assign(defalutConfig, config || {});
+    this.config = $.extend(defalutConfig, config || {});
     log(this.config.isDebug, '弹幕初始化');
 
     this.bulletId = 0;
@@ -78,17 +67,17 @@ barrage.prototype.load = function (bullets) {
     }.bind(this));
     this.bulletPool = this.bulletPool.concat(bullets);
     log(this.config.isDebug, `装载子弹，子弹数量：${this.bulletPool.length}`);
-    
+
     if (this.status && this.status === 'idle') {
         this.status = 'running';
         requestAnimationFrame(this.animate.bind(this));
     }
 }
 
-barrage.prototype.moveBullet = function(bullet) {
+barrage.prototype.moveBullet = function (bullet) {
     var step = new TWEEN.Tween(bullet.steps, this.tweenGroup)
         .to({ left: this.root.offsetWidth + bullet.width }, this.config.displayTime)
-        .onUpdate(function(){
+        .onUpdate(function () {
             this.print(bullet);
         }.bind(this))
         .easing(TWEEN.Easing.Linear.None)
@@ -102,53 +91,53 @@ barrage.prototype.moveBullet = function(bullet) {
     return step;
 }
 
-barrage.prototype.print = function(bullet) {
+barrage.prototype.print = function (bullet) {
     var width = this.root.offsetWidth;
     var height = this.root.offsetHeight;
 
-        // 半圆
-        this.ctx.fillStyle = "rgba(0,0,0,0.8)";
-        this.ctx.beginPath();
-        this.ctx.arc(
-            width - bullet.steps.left + this.config.fontSize / 2, 
-            this.tracks[bullet.trackId].top - this.config.fontSize / 2, 
-            this.config.fontSize / 2, 
-            -Math.PI / 2, Math.PI / 2, true);
-        this.ctx.fill();
-        // 矩形
-        this.ctx.fillRect(
-            width - bullet.steps.left + this.config.fontSize / 2,
-            this.tracks[bullet.trackId].top - this.config.fontSize,
-            bullet.width - this.config.fontSize,
-            this.config.fontSize);
-        // 半圆
-        this.ctx.beginPath();
-        this.ctx.arc(
-            width - bullet.steps.left - this.config.fontSize / 2 + bullet.width, 
-            this.tracks[bullet.trackId].top - this.config.fontSize / 2, 
-            this.config.fontSize / 2, 
-            Math.PI / 2, Math.PI * 1.5, true);
-        this.ctx.fill();
-        // 文字
-        this.ctx.fillStyle = "rgba(255,255,255,1)";
-        this.ctx.fillText(bullet.msg, 
-            width - bullet.steps.left + this.config.fontSize / 2, 
-            this.tracks[bullet.trackId].top - this.config.fontSize * 0.15);
+    // 半圆
+    this.ctx.fillStyle = "rgba(0,0,0,0.8)";
+    this.ctx.beginPath();
+    this.ctx.arc(
+        width - bullet.steps.left + this.config.fontSize / 2,
+        this.tracks[bullet.trackId].top - this.config.fontSize / 2,
+        this.config.fontSize / 2,
+        -Math.PI / 2, Math.PI / 2, true);
+    this.ctx.fill();
+    // 矩形
+    this.ctx.fillRect(
+        width - bullet.steps.left + this.config.fontSize / 2,
+        this.tracks[bullet.trackId].top - this.config.fontSize,
+        bullet.width - this.config.fontSize,
+        this.config.fontSize);
+    // 半圆
+    this.ctx.beginPath();
+    this.ctx.arc(
+        width - bullet.steps.left - this.config.fontSize / 2 + bullet.width,
+        this.tracks[bullet.trackId].top - this.config.fontSize / 2,
+        this.config.fontSize / 2,
+        Math.PI / 2, Math.PI * 1.5, true);
+    this.ctx.fill();
+    // 文字
+    this.ctx.fillStyle = "rgba(255,255,255,1)";
+    this.ctx.fillText(bullet.msg,
+        width - bullet.steps.left + this.config.fontSize / 2,
+        this.tracks[bullet.trackId].top - this.config.fontSize * 0.15);
 }
 
-barrage.prototype.createBullet = function(bullet) {
+barrage.prototype.createBullet = function (bullet) {
     return {
         id: bullet.id,
         msg: bullet.msg,
         width: utils.getTextBulletLength(this.ctx, bullet.msg, this.config.fontSize),
-        v: ( utils.getTextBulletLength(this.ctx, bullet.msg, this.config.fontSize) + this.root.offsetWidth ) / this.config.displayTime,
+        v: (utils.getTextBulletLength(this.ctx, bullet.msg, this.config.fontSize) + this.root.offsetWidth) / this.config.displayTime,
         trackId: null,
-        steps: {left: 0}
+        steps: { left: 0 }
     }
 }
 
-barrage.prototype.getIdleTrack = function() {
-    for(var i = 0; i < this.lastFired.length; i++) {
+barrage.prototype.getIdleTrack = function () {
+    for (var i = 0; i < this.lastFired.length; i++) {
         if (this.lastFired[i] === null) {
             return i;
         } else {
@@ -164,10 +153,10 @@ barrage.prototype.getIdleTrack = function() {
     return null;
 }
 
-barrage.prototype.fire = function() {
+barrage.prototype.fire = function () {
     if (this.bulletPool.length === 0) {
         log(this.config.isDebug, 'bulletPool已空，进入空闲状态');
-        if(this.bulletRunningPool.size === 0) {
+        if (this.bulletRunningPool.size === 0) {
             this.status === 'idle';
         }
         return;
@@ -184,7 +173,7 @@ barrage.prototype.fire = function() {
     }
 
     this.nextBullet.trackId = trackId;
-    this.lastFired[trackId] =  this.nextBullet;
+    this.lastFired[trackId] = this.nextBullet;
     this.bulletRunningPool.set(this.nextBullet.id, this.nextBullet);
 
     var step = this.moveBullet(this.nextBullet);
@@ -192,18 +181,18 @@ barrage.prototype.fire = function() {
     this.nextBullet = null;
 }
 
-barrage.prototype.start = function() {
+barrage.prototype.start = function () {
     if (this.status && this.status === 'init') {
         this.status = 'running';
         requestAnimationFrame(this.animate.bind(this));
     }
 }
 
-barrage.prototype.clarnAll = function() {
+barrage.prototype.clarnAll = function () {
     if (this.status !== undefined) {
         this.nextBullet = null;
         this.bulletPool = [];
-        this.bulletRunningPool.forEach(function(item){
+        this.bulletRunningPool.forEach(function (item) {
             if (item.step) {
                 item.step.stop();
             }
@@ -215,7 +204,29 @@ barrage.prototype.clarnAll = function() {
 }
 
 var utils = {
-    getTextBulletLength: function(ctx,msg,fontSize) {
+    getTextBulletLength: function (ctx, msg, fontSize) {
         return ctx.measureText(msg).width + fontSize;
+    }
+}
+
+function ppParrage(root) {
+    this.barrage = new barrage(root);
+}
+
+ppParrage.prototype = {
+    'init': function (config) {
+        this.barrage.init(config);
+    },
+    'load': function (bullets) {
+        this.barrage.load(bullets);
+    },
+    'start': function () {
+        this.barrage.start();
+    },
+    'clarnAll': function () {
+        this.barrage.clarnAll();
+    },
+    'getStatus': function () {
+        return this.barrage.status;
     },
 }
