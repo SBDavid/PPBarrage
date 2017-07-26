@@ -1,6 +1,6 @@
 {
   "name": "pp-barrage",
-  "version": "2.3.0",
+  "version": "2.3.2",
   "description": "Hign performance barrage base on canvas",
   "scripts": {
     "start": "webpack -w --colors --profile"

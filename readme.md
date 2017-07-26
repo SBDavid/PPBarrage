@@ -1,7 +1,7 @@
 # 高性能canvas弹幕
 
 支持同时显示200条弹幕，并维持60fps帧率
-![效果](图片链接 "http://i4.eiimg.com/1949/ce509c38502be29c.png")
+![Markdown](http://i4.eiimg.com/1949/ce509c38502be29c.png)
 
 ## 特征
 - 支持配置弹幕显示时间，字数多的弹幕移动更快
