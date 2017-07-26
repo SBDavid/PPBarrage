@@ -32,9 +32,7 @@
 
 ## Usage
 
-- be sure that the jquery is loaded
-- npm i jquery-parallel-ajax
-- $.parallelAjax(options, success, error, 3000);
+- be sure that the jquery and tween.js is loaded
 
 ## Simple
 HTML
