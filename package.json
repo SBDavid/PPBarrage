@@ -1,13 +1,15 @@
 {
-  "name": "temp",
+  "name": "ppBarrage",
   "version": "1.0.0",
-  "description": "",
+  "description": "Hign performance barrage base on canvas",
   "scripts": {
     "start": "webpack -w --colors --profile"
   },
   "author": "SBDavid",
   "license": "ISC",
   "dependencies": {
+    "jquery": "^3.2.1",
+    "tween.js": "^16.6.0"
   },
   "devDependencies": {
     "webpack": "^3.1.0"

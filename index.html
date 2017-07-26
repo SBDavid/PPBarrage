@@ -3,19 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="./src/Tween.js"></script>
+     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./src/Tween.js"></script> 
     <script src="./src/index.js"></script>
     <link href="./index.css" rel="stylesheet" type="text/css" />
     <script>
         window.onload = function () {
-            var test = new ppParrage(document.getElementById('pg'));
+            var test = new ppParrage.ppParrage(document.getElementById('pg'));
             $('#init').click(function () {
                 test.init({
                     bulletHeight: 50,
                     displayTime: 6000,  // 弹幕显示的时长
                     isDebug: false,
-                    fontSize: 14        // 弹幕字体大小
+                    fontSize: 28        // 弹幕字体大小
                 }); 
             })
             $('#start').click(function () { test.start(); })
