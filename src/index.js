@@ -4,10 +4,9 @@ function barrage(ele) {
 
 var defalutConfig = {
     bulletHeight: 50,
-    fireInterval: 200,
-    displayTime: 6000,  // 弹幕显示的时长
-    isDebug: true,
-    fontSize: 24        // 弹幕字体大小
+    displayTime: 10000,  // 弹幕显示的时长
+    isDebug: false,
+    fontSize: 14        // 弹幕字体大小
 }
 
 function log(isDebug, ...para) {
@@ -42,17 +41,12 @@ function createBullet(config, bulletInfo, trackInfo, rootWidth) {
     return bullet;
 }
 
-function mountBullet(ele, bullet) {
-    ele.appendChild(bullet);
-}
-
 barrage.prototype.animate = function (time) {
     if (this.status === 'running') {
         this.ctx.clearRect(0, 0, this.root.offsetWidth, this.root.offsetHeight);
-        requestAnimationFrame(this.animate.bind(this));
-        this.tweenGroup.update(time);
-        
         this.fire();
+        this.tweenGroup.update(time);
+        requestAnimationFrame(this.animate.bind(this));
     }
 }
 
@@ -68,11 +62,11 @@ barrage.prototype.init = function (config) {
     this.lastFired = {};                        // 一条弹幕中的最后一个，如果为空表示弹道是空的
     this.fireTimer = null;
     this.tweenGroup = new TWEEN.Group();
-    this.status = null;                         // 弹幕状态：init | running | idle
+    this.status = 'init';                         // 弹幕状态：init | running | idle
     this.nextBullet = null;                     // 下一次要发射的弹幕
     this.ctx = this.root.getContext('2d');
-    this.ctx.font = this.config.fontSize + 'px serif';
-    this.ctx.textBaseline = 'bottom';
+    this.ctx.font = this.config.fontSize + 'px Microsoft YaHei';
+    this.ctx.textBaseline = 'Middle';
 
     this.initTrack(this.config, this.tracks, this.root.offsetHeight);
 }
@@ -84,11 +78,9 @@ barrage.prototype.load = function (bullets) {
     }.bind(this));
     this.bulletPool = this.bulletPool.concat(bullets);
     log(this.config.isDebug, `装载子弹，子弹数量：${this.bulletPool.length}`);
+    
     if (this.status && this.status === 'idle') {
         this.status = 'running';
-        /* this.fireTimer = setInterval(function () {
-            this.fire();
-        }.bind(this), this.config.fireInterval); */
         requestAnimationFrame(this.animate.bind(this));
     }
 }
@@ -107,15 +99,15 @@ barrage.prototype.moveBullet = function(bullet) {
             }
         }.bind(this));
     step.start();
+    return step;
 }
 
 barrage.prototype.print = function(bullet) {
-    /*this.ctx.clearRect(0, 0, this.root.offsetWidth, this.root.offsetHeight);*/
     var width = this.root.offsetWidth;
     var height = this.root.offsetHeight;
 
         // 半圆
-        this.ctx.fillStyle = "rgba(0,0,0,0.5)";
+        this.ctx.fillStyle = "rgba(0,0,0,0.8)";
         this.ctx.beginPath();
         this.ctx.arc(
             width - bullet.steps.left + this.config.fontSize / 2, 
@@ -141,7 +133,7 @@ barrage.prototype.print = function(bullet) {
         this.ctx.fillStyle = "rgba(255,255,255,1)";
         this.ctx.fillText(bullet.msg, 
             width - bullet.steps.left + this.config.fontSize / 2, 
-            this.tracks[bullet.trackId].top);
+            this.tracks[bullet.trackId].top - this.config.fontSize * 0.15);
 }
 
 barrage.prototype.createBullet = function(bullet) {
@@ -175,7 +167,9 @@ barrage.prototype.getIdleTrack = function() {
 barrage.prototype.fire = function() {
     if (this.bulletPool.length === 0) {
         log(this.config.isDebug, 'bulletPool已空，进入空闲状态');
-        /* clearInterval(this.fireTimer); */
+        if(this.bulletRunningPool.size === 0) {
+            this.status === 'idle';
+        }
         return;
     }
     if (this.nextBullet === null) {
@@ -193,20 +187,31 @@ barrage.prototype.fire = function() {
     this.lastFired[trackId] =  this.nextBullet;
     this.bulletRunningPool.set(this.nextBullet.id, this.nextBullet);
 
-    this.moveBullet(this.nextBullet);
+    var step = this.moveBullet(this.nextBullet);
+    this.bulletRunningPool.get(this.nextBullet.id).step = step;
     this.nextBullet = null;
 }
 
 barrage.prototype.start = function() {
-    if (this.status || this.status === 'init') {
-        return;
+    if (this.status && this.status === 'init') {
+        this.status = 'running';
+        requestAnimationFrame(this.animate.bind(this));
     }
+}
 
-    this.status = 'running';
-    /* this.fireTimer = setInterval(function(){
-        this.fire();
-    }.bind(this), this.config.fireInterval); */
-    requestAnimationFrame(this.animate.bind(this));
+barrage.prototype.clarnAll = function() {
+    if (this.status !== undefined) {
+        this.nextBullet = null;
+        this.bulletPool = [];
+        this.bulletRunningPool.forEach(function(item){
+            if (item.step) {
+                item.step.stop();
+            }
+        });
+        this.bulletRunningPool.clear();
+        this.status = 'init';
+        this.ctx.clearRect(0, 0, this.root.offsetWidth, this.root.offsetHeight);
+    }
 }
 
 var utils = {

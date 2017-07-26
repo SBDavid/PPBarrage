@@ -10,181 +10,25 @@
     <script>
         window.onload = function () {
             var test = new barrage(document.getElementById('pg'));
-            test.init();
-            /* test.load([
-               {msg: '我是一条弹幕1'},
-               {msg: '我是一条弹幕2'},
-               {msg: '我是一条弹幕3'},
-               {msg: '我是一条弹幕4'},
-               {msg: '我是一条弹幕5'},
-               {msg: '我是一条弹幕6'},
-               {msg: '我是一条弹幕7'},
-               {msg: '我是一条弹幕8'},
-               {msg: '我是一条弹幕9'},
-               {msg: '我是一条弹幕10'},
-               {msg: '我是一条弹幕11'},
-               {msg: '我是一条弹幕12'},
-               {msg: '我是一条弹幕13'},
-               {msg: '我是一条弹幕1'},
-               {msg: '我是一条弹幕2'},
-               {msg: '我是一条弹幕3'},
-               {msg: '我是一条弹幕4'},
-               {msg: '我是一条弹幕5'},
-               {msg: '我是一条弹幕6'},
-               {msg: '我是一条弹幕7'},
-               {msg: '我是一条弹幕8'},
-               {msg: '我是一条弹幕9'},
-               {msg: '我是一条弹幕10'},
-               {msg: '我是一条弹幕11'},
-               {msg: '我是一条弹幕12'},
-               {msg: '我是一条弹幕13'},
-               {msg: '我是一条弹幕1'},
-               {msg: '我是一条弹幕2'},
-               {msg: '我是一条弹幕3'},
-               {msg: '我是一条弹幕4'},
-               {msg: '我是一条弹幕5'},
-               {msg: '我是一条弹幕6'},
-               {msg: '我是一条弹幕7'},
-               {msg: '我是一条弹幕8'},
-               {msg: '我是一条弹幕9'},
-               {msg: '我是一条弹幕10'},
-               {msg: '我是一条弹幕11'},
-               {msg: '我是一条弹幕12'},
-               {msg: '我是一条弹幕13'},
-               {msg: '我是一条弹幕1'},
-               {msg: '我是一条弹幕2'},
-               {msg: '我是一条弹幕3'},
-               {msg: '我是一条弹幕4'},
-               {msg: '我是一条弹幕5'},
-               {msg: '我是一条弹幕6'},
-               {msg: '我是一条弹幕7'},
-               {msg: '我是一条弹幕8'},
-               {msg: '我是一条弹幕9'},
-               {msg: '我是一条弹幕10'},
-               {msg: '我是一条弹幕11'},
-               {msg: '我是一条弹幕12'},
-               {msg: '我是一条弹幕13'},
-            ]); */
-            
-            /*test.load([
-                { msg: '我是一条弹幕1' },
-                { msg: '我是一条弹幕2' },
-                { msg: '我是一条弹幕3' },
-                { msg: '我是一条弹幕4' },
-                
-            ]);*/
-
-            $('#pause').click(function () { test.pause(); })
-            $('#resume').click(function () { test.play(); })
+            $('#init').click(function () {
+                test.init({
+                    bulletHeight: 50,
+                    displayTime: 6000,  // 弹幕显示的时长
+                    isDebug: false,
+                    fontSize: 14        // 弹幕字体大小
+                }); 
+            })
             $('#start').click(function () { test.start(); })
             $('#load').click(function () {
                 test.load([
                     { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                     { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
-                    { msg: '我是一条弹幕 load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕' },
-                    { msg: '我是一条弹幕 load load load load' },
-                    { msg: '我是一条弹幕 load load' },
-                    { msg: '我是一条弹幕 load load load' },
                 ])
             })
             $('#status').click(function () {
                  $('#status').text(test.status);
+            })
+            $('#clarnAll').click(function () {
+                 test.clarnAll();
             })
         }
     </script>
@@ -194,11 +38,13 @@
     <canvas id="pg" width="1024" height="768">
 
     </canvas>
-    <button id="start">start</button>
-    <button id="pause">pause</button>
-    <button id="resume">resume</button>
-    <button id="load">load</button>
-    <button id="status">status</button>
+    <div>
+        <button id="init">init</button> 
+        <button id="load">load</button>
+        <button id="start">start</button>
+        <button id="clarnAll">clarnAll</button>
+        <button id="status">status</button>
+    </div>
 </body>
 
 </html>
