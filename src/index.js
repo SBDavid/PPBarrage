@@ -1,3 +1,12 @@
+
+window.requestAnimationFrame = (function () {
+    return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        function (callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
 function barrage(ele) {
     console.info(ele instanceof HTMLCanvasElement);
     this.root = ele;
@@ -27,7 +36,7 @@ barrage.prototype.initTrack = function () {
         this.lastFired[i] = null;
     }
     this.lastFired.length = trackAmount;
-    log(this.config.isDebug, `初始化弹道数量: ${trackAmount}`);
+    log(this.config.isDebug, '初始化弹道数量: ' + trackAmount);
 }
 
 barrage.prototype.animate = function (time) {
@@ -46,7 +55,7 @@ barrage.prototype.init = function (config) {
 
     this.bulletId = 0;
     this.bulletPool = [];
-    this.bulletRunningPool = new Map();
+    this.bulletRunningPool = new utils.Map();
     this.tracks = [];
     this.lastFired = {};                        // 一条弹幕中的最后一个，如果为空表示弹道是空的
     this.fireTimer = null;
@@ -66,7 +75,7 @@ barrage.prototype.load = function (bullets) {
         this.bulletId++;
     }.bind(this));
     this.bulletPool = this.bulletPool.concat(bullets);
-    log(this.config.isDebug, `装载子弹，子弹数量：${this.bulletPool.length}`);
+    log(this.config.isDebug, '装载子弹，子弹数量：' + this.bulletPool.length);
 
     if (this.status && this.status === 'idle') {
         this.status = 'running';
@@ -206,8 +215,60 @@ barrage.prototype.clarnAll = function () {
 var utils = {
     getTextBulletLength: function (ctx, msg, fontSize) {
         return ctx.measureText(msg).width + fontSize;
+    },
+    Map: window.Map ? window.Map : map,
+}
+
+function map() {
+    this.data = [];
+}
+
+map.prototype = {
+    get size() {
+        return this.data.length;
+    },
+    clear: function () {
+        this.data = [];
+    },
+    indexOf: function (key) {
+        for (var i = 0; i < this.data.length; i++) {
+            if (this.data[i].key === key) {
+                return i;
+            }
+        }
+        return -1;
+    },
+    get: function (key) {
+        var index = this.indexOf(key);
+        if (index !== -1) {
+            return this.data[index].value;
+        }
+        return undefined;
+    },
+    set: function (key, value) {
+        var index = this.indexOf(key);
+        if (index === -1) {
+            this.data.push({
+                key: key,
+                value: value
+            })
+        } else {
+            this.data[index].value = value;
+        }
+    },
+    delete: function (key) {
+        var index = this.indexOf(key);
+        if (index === -1) {
+            return false;
+        } else {
+            this.data.splice(index, 1);
+            return true;
+        }
     }
 }
+
+
+
 
 function ppParrage(root) {
     this.barrage = new barrage(root);
