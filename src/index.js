@@ -214,6 +214,7 @@
         if (this.status !== undefined) {
             this.nextBullet = null;
             this.bulletPool = [];
+            this.lastFired = { length: 0 }; 
             this.bulletRunningPool.forEach(function (item) {
                 if (item.step) {
                     item.step.stop();
