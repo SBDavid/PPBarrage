@@ -12,30 +12,49 @@
             var test = new ppParrage.ppParrage(document.getElementById('pg'));
             $('#init').click(function () {
                 test.init({
-                    bulletHeight: 50,
-                    displayTime: 6000,  // 弹幕显示的时长
+                    trackHeight: 40,
+                    bulletHeight: 30,
+                    displayTime: 10000,  // 弹幕显示的时长
                     isDebug: false,
-                    fontSize: 28        // 弹幕字体大小
+                    fontSize: 14,        // 弹幕字体大小
+                    bottom: 0,           // 底部留白
+                    bulletMargin: 20     // 弹幕间距
                 }); 
             })
             $('#start').click(function () { test.start(); })
             $('#load').click(function () {
                 test.load([
-                    { msg: '我是一条弹幕' },
+                    { msg: '前排' },
+                    { msg: '有没有人在' },
+                    { msg: '江上青风游' },
+                    { msg: '不错呀！' },
+                    { msg: '葡萄皮拼的等等我' },
+                    { msg: '仙女啊' },
+                    { msg: '说水脏有病毒的人有毛病?你自来水都不嫌脏嫌这个水脏?' },
+                    { msg: '这是桃花园记？' },
+                    { msg: '淡紫色。' },
+                    { msg: '表白BGM' },
+                    { msg: '大学学染布的飘过，试验' },
+                    { msg: '哇，好靓' },
+                    { msg: '刚才那一声布谷我还以为是青春修炼手册' },
+                    { msg: '古冈' },
+                    { msg: '食盐的作用是促染' },
+                    { msg: '炒鸡仙' },
+                    { msg: '哈哈哈哈' },
                 ])
             })
             $('#status').click(function () {
                  $('#status').text(test.getStatus());
             })
             $('#clarnAll').click(function () {
-                 test.clarnAll();
+                 test.clearAll();
             })
         }
     </script>
 </head>
 
 <body>
-    <canvas id="pg" width="800" height="400">
+    <canvas id="pg" width="1024" height="768">
 
     </canvas>
     <div>
