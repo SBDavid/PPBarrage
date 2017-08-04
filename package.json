@@ -1,12 +1,16 @@
 {
   "name": "pp-barrage",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "Hign performance barrage base on canvas",
   "scripts": {
     "start": "webpack -w --colors --profile"
   },
   "author": "SBDavid",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SBDavid/PPBarrage.git"
+  },
   "dependencies": {
     "jquery": "^3.2.1",
     "tween.js": "^16.6.0"

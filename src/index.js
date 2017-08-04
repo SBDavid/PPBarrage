@@ -39,8 +39,8 @@
     }
 
     barrage.prototype.initTrack = function () {
-        var trackAmount = parseInt(this.root.offsetHeight / this.config.bulletHeight);
-        for (var i = 0; i < trackAmount; i++) {
+        this.trackAmount = parseInt(this.root.offsetHeight / this.config.bulletHeight);
+        for (var i = 0; i < this.trackAmount; i++) {
             this.tracks.push({
                 id: i,
                 top: (i + 1) * this.config.bulletHeight
@@ -48,8 +48,8 @@
 
             this.lastFired[i] = null;
         }
-        this.lastFired.length = trackAmount;
-        log(this.config.isDebug, '初始化弹道数量: ' + trackAmount);
+        this.lastFired.length = this.trackAmount;
+        log(this.config.isDebug, '初始化弹道数量: ' + this.trackAmount);
     }
 
     barrage.prototype.animate = function (time) {
@@ -214,7 +214,7 @@
         if (this.status !== undefined) {
             this.nextBullet = null;
             this.bulletPool = [];
-            this.lastFired = { length: 0 }; 
+            this.lastFired = { length: this.trackAmount }; 
             this.bulletRunningPool.forEach(function (item) {
                 if (item.step) {
                     item.step.stop();
