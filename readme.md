@@ -93,4 +93,5 @@ HTML
 ```
 
 ## 版本更新
+- 2.3.3 增加弹幕间距
 - 2.3.2 bug修复：clearAll函数清楚lastFired集合
