@@ -82,7 +82,7 @@
         this.root.height = this.root.offsetHeight;
         this.ctx = this.root.getContext('2d');
         this.ctx.font = this.config.fontSize + 'px Microsoft YaHei';
-        this.ctx.textBaseline = 'Bottom';
+        this.ctx.textBaseline = 'middle';
         this.canvasWidth = this.root.offsetWidth;   // 记录画布的宽度，因为当dom是隐藏的时候无法获取dom宽度
 
         this.initTrack(this.config, this.tracks, this.root.offsetHeight);
@@ -111,7 +111,7 @@
             .easing(TWEEN.Easing.Linear.None)
             .onComplete(function () {
                 this.bulletRunningPool.delete(bullet.id);
-                if (this.bulletRunningPool.size === 0) {
+                if (this.bulletRunningPool.size === 0 && this.nextBullet === null) {
                     this.status = 'idle';
                 }
             }.bind(this));
@@ -149,8 +149,8 @@
         // 文字
         this.ctx.fillStyle = "rgba(255,255,255,1)";
         this.ctx.fillText(bullet.msg,
-            width - bullet.steps.left + this.config.bulletHeight / 2,
-            this.tracks[bullet.trackId].top - (this.config.bulletHeight - this.config.fontSize) / 2);
+        width - bullet.steps.left + this.config.bulletHeight / 2,
+        this.tracks[bullet.trackId].top - (this.config.bulletHeight) / 2);
     }
 
     barrage.prototype.createBullet = function (bullet) {
@@ -182,8 +182,8 @@
     }
 
     barrage.prototype.fire = function () {
-        if (this.bulletPool.length === 0) {
-            log(this.config.isDebug, 'bulletPool已空，进入空闲状态');
+        if (this.bulletPool.length === 0 && this.nextBullet === null) {
+            log(this.config.isDebug, 'bulletPool已空，进入空闲状态' && this.nextBullet === null);
             if (this.bulletRunningPool.size === 0) {
                 this.status === 'idle';
             }
